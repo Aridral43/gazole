@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0a">
+<title>Gazole</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--m:"JetBrains Mono",monospace;--s:"DM Sans",sans-serif;--g:#22c55e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#fff;font-family:var(--s);max-width:460px;margin:0 auto;min-height:100vh}
+input::placeholder{color:#444}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hd{padding:22px 18px 12px}
+.hr{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;font-weight:800;display:flex;align-items:center;gap:9px}
+.li{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--g),#15803d);display:inline-flex;align-items:center;justify-content:center;font-size:15px}
+.rb{background:#ffffff06;border:1px solid #ffffff0c;border-radius:8px;padding:6px 10px;color:#555;font-size:11px;font-family:var(--m);cursor:pointer}
+.lr{margin:4px 0 0 41px;font-size:9px;color:#282828;font-family:var(--m)}
+.tabs{display:flex;padding:8px 18px;gap:6px}
+.tab{flex:1;padding:9px 0;border-radius:8px;border:none;font-size:12.5px;font-weight:700;cursor:pointer;font-family:var(--s)}
+.tab.on{background:var(--g);color:#000}
+.tab.off{background:#ffffff08;color:#555}
+.ct{padding:6px 18px}
+.row{display:flex;gap:6px;margin-bottom:12px}
+.inp{flex:1;background:#131313;border:1px solid #ffffff0c;border-radius:10px;padding:12px 14px;color:#fff;font-size:14px;font-family:var(--s);outline:none}
+.inp:focus{border-color:#22c55e44}
+.gobtn{background:var(--g);border:none;border-radius:10px;padding:12px 16px;color:#000;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--s)}
+.gobtn:disabled{opacity:.5}
+.geobtn{background:#3b82f6;border:none;border-radius:10px;padding:10px 14px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--s);width:100%;margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:6px}
+.geobtn:disabled{opacity:.5}
+.card{background:#131313;border:1px solid #ffffff08;border-radius:14px;padding:16px;position:relative;margin-bottom:8px}
+.card.best{background:linear-gradient(135deg,#0b2e1a,#103d22);border-color:#22c55e30}
+.badge{display:inline-block;background:var(--g);color:#000;font-size:8px;font-weight:800;padding:2px 5px;border-radius:3px;font-family:var(--m);margin-left:8px;vertical-align:middle}
+.cfl{display:flex;justify-content:space-between;gap:10px}
+.cle{flex:1;min-width:0}
+.cnr{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.star{background:none;border:none;cursor:pointer;padding:0;font-size:17px;color:#333}
+.star.on{color:#f59e0b}
+.cna{font-size:14px;font-weight:700;color:#eee;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cad{margin-left:24px;font-size:11.5px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cci{margin-left:24px;font-size:11px;color:#444;margin-top:2px}
+.cti{margin-left:6px;font-size:10px;color:#555;font-family:var(--m)}
+.cdist{margin-left:6px;font-size:10px;color:#3b82f6;font-family:var(--m);font-weight:600}
+.cpr{font-size:24px;font-weight:800;line-height:1;letter-spacing:-1px;font-family:var(--m);text-align:right;color:#fff}
+.cpr.g{color:var(--g)}
+.cpr.x{color:#2a2a2a}
+.cun{font-size:9px;color:#444;font-family:var(--m);margin-top:2px;text-align:right}
+.ml{display:inline-flex;align-items:center;gap:4px;margin-left:24px;margin-top:6px;font-size:11px;color:#3b82f6;text-decoration:none}
+.ml:hover{text-decoration:underline}
+.load{text-align:center;padding:24px 0;font-size:12px;color:#22c55e66;font-family:var(--m);display:flex;align-items:center;justify-content:center;gap:8px}
+.dot{display:inline-block;width:12px;height:12px;border:2px solid #ffffff0a;border-top:2px solid var(--g);border-radius:50%;animation:spin .7s linear infinite}
+.err{background:#190a0a;border:1px solid #ef444430;border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#ef4444}
+.nil{text-align:center;padding:50px 20px;color:#333}
+.nil b{color:#555}
+.sum{margin-top:4px;background:#131313;border:1px solid #ffffff08;border-radius:10px;padding:13px}
+.srow{display:flex;justify-content:space-between}
+.slbl{font-size:11px;color:#444;font-family:var(--m)}
+.sval{font-size:13px;font-weight:700;color:#f59e0b;font-family:var(--m)}
+.ssub{margin-top:4px;font-size:10.5px;color:#3a3a3a}
+.info{margin-top:8px;font-size:10px;color:#282828;font-family:var(--m);text-align:center}
+.ft{padding:24px 18px 16px;text-align:center;font-size:9px;color:#1a1a1a;font-family:var(--m)}
+</style>
+</head>
+<body>
+<div class="hd">
+  <div class="hr">
+    <h1 class="logo"><span class="li">&#9981;</span> Gazole</h1>
+    <button class="rb" id="RB" style="display:none">&#10227; Actualiser</button>
+  </div>
+  <div class="lr" id="LR"></div>
+</div>
+<div class="tabs">
+  <button class="tab on" id="T1">&#9733; Favoris</button>
+  <button class="tab off" id="T2">Rechercher</button>
+</div>
+<div class="ct" id="CT"></div>
+<div class="ft">data.economie.gouv.fr</div>
+
+<script>
+(function(){
+  var API = "https://gazol-api.collard-rom.workers.dev";
+  var F = [];
+  var R = [];
+  var TAB = "fav";
+  var myLat = null;
+  var myLon = null;
+
+  function ago(d) {
+    if (!d) return "";
+    var m = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
+    if (m < 0) return "";
+    if (m < 60) return m + "min";
+    var h = Math.floor(m / 60);
+    if (h < 24) return h + "h";
+    return Math.floor(h / 24) + "j";
+  }
+
+  function esc(t) {
+    var d = document.createElement("div");
+    d.textContent = t || "";
+    return d.innerHTML;
+  }
+
+  function gn(s) {
+    if (s.name && s.name.length > 1) return s.name;
+    return s.address || "Station";
+  }
+
+  function mapsUrl(s) {
+    if (s.lat && s.lon) {
+      return "https://www.google.com/maps/dir/?api=1&destination=" + s.lat + "," + s.lon;
+    }
+    return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent((s.address || "") + " " + (s.cp || "") + " " + (s.city || ""));
+  }
+
+  // Haversine distance in km
+  function dist(lat1, lon1, lat2, lon2) {
+    if (!lat1 || !lon1 || !lat2 || !lon2) return null;
+    var R2 = 6371;
+    var dLat = (lat2 - lat1) * Math.PI / 180;
+    var dLon = (lon2 - lon1) * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R2 * c;
+  }
+
+  function distStr(s) {
+    if (!myLat || !myLon || !s.lat || !s.lon) return "";
+    var d = dist(myLat, myLon, s.lat, s.lon);
+    if (d === null) return "";
+    if (d < 1) return Math.round(d * 1000) + "m";
+    return d.toFixed(1).replace(".", ",") + "km";
+  }
+
+  function loadFavs() {
+    try { return JSON.parse(localStorage.getItem("gzfD")) || []; }
+    catch(e) { return []; }
+  }
+
+  function saveFavs() {
+    try { localStorage.setItem("gzfD", JSON.stringify(F)); }
+    catch(e) {}
+  }
+
+  // Try to get location on startup
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        myLat = pos.coords.latitude;
+        myLon = pos.coords.longitude;
+        renderCards();
+      }, function() {}, { timeout: 5000 });
+    }
+  }
+
+  F = loadFavs();
+  getLocation();
+
+  document.getElementById("T1").addEventListener("click", function(){ switchTab("fav"); });
+  document.getElementById("T2").addEventListener("click", function(){ switchTab("search"); });
+  document.getElementById("RB").addEventListener("click", function(){ doRefresh(); });
+
+  paint();
+  if (F.length > 0) doRefresh();
+
+  function switchTab(t) {
+    TAB = t;
+    document.getElementById("T1").className = "tab " + (t === "fav" ? "on" : "off");
+    document.getElementById("T2").className = "tab " + (t === "search" ? "on" : "off");
+    paint();
+  }
+
+  function updateTabLabel() {
+    document.getElementById("T1").textContent = "\u2605 Favoris" + (F.length ? " (" + F.length + ")" : "");
+  }
+
+  function paint() {
+    var el = document.getElementById("CT");
+    var h = "";
+    document.getElementById("RB").style.display = (TAB === "fav" && F.length > 0) ? "block" : "none";
+    updateTabLabel();
+
+    if (TAB === "search") {
+      h += '<div class="row">';
+      h += '<input class="inp" id="QI" placeholder="Code postal ou ville...">';
+      h += '<button class="gobtn" id="QB">Go</button>';
+      h += '</div>';
+      h += '<button class="geobtn" id="GEO">\uD83D\uDCCD Stations autour de moi (10 km)</button>';
+    }
+    h += '<div id="CDS"></div>';
+    el.innerHTML = h;
+
+    if (TAB === "search") {
+      document.getElementById("QI").addEventListener("keydown", function(e) {
+        if (e.key === "Enter") doSearch();
+      });
+      document.getElementById("QB").addEventListener("click", function() { doSearch(); });
+      document.getElementById("GEO").addEventListener("click", function() { doNearby(); });
+    }
+
+    renderCards();
+  }
+
+  function renderCards() {
+    var el = document.getElementById("CDS");
+    if (!el) return;
+    var L = TAB === "fav" ? F : R;
+    var h = "";
+
+    if (TAB === "fav" && F.length === 0) {
+      h += '<div class="nil">';
+      h += '<div style="font-size:42px;margin-bottom:14px;opacity:.4">\u26FD</div>';
+      h += '<div style="font-size:15px;font-weight:700;color:#444;margin-bottom:6px">Aucune station</div>';
+      h += '<div style="font-size:12.5px;line-height:1.6">Va dans <b>Rechercher</b> pour trouver tes stations</div>';
+      h += '</div>';
+      el.innerHTML = h;
+      return;
+    }
+
+    var pp = [];
+    for (var i = 0; i < F.length; i++) {
+      if (F[i].price) pp.push(F[i].price);
+    }
+    var best = pp.length ? Math.min.apply(null, pp) : null;
+
+    for (var i = 0; i < L.length; i++) {
+      var s = L[i];
+      var ib = (TAB === "fav" && best !== null && s.price === best);
+      var nm = gn(s);
+      var iv = false;
+      for (var j = 0; j < F.length; j++) {
+        if (F[j].id === s.id) { iv = true; break; }
+      }
+      var ps = s.price ? s.price.toFixed(3).replace(".", ",") : "\u2014";
+      var pc = ib ? " g" : (s.price ? "" : " x");
+      var ds = distStr(s);
+
+      h += '<div class="card' + (ib ? " best" : "") + '">';
+      h += '<div class="cfl"><div class="cle"><div class="cnr">';
+      h += '<button class="star' + (iv ? " on" : "") + '" data-fav="' + s.id + '">' + (iv ? "\u2605" : "\u2606") + '</button>';
+      h += '<span class="cna">' + esc(nm) + '</span>';
+      if (ib) h += '<span class="badge">MOINS CHER</span>';
+      h += '</div>';
+      h += '<div class="cad">' + esc(s.address) + '</div>';
+      h += '<div class="cci">' + esc(s.cp + " " + s.city);
+      if (s.updated) h += '<span class="cti">\u2022 ' + ago(s.updated) + '</span>';
+      if (ds) h += '<span class="cdist">\u2022 ' + ds + '</span>';
+      h += '</div>';
+      h += '<a class="ml" href="' + mapsUrl(s) + '" target="_blank">\uD83D\uDCCD Itin\u00E9raire</a>';
+      h += '</div>';
+      h += '<div><div class="cpr' + pc + '">' + ps + '</div>';
+      h += '<div class="cun">\u20AC/L</div></div>';
+      h += '</div></div>';
+    }
+
+    if (TAB === "fav" && pp.length > 1) {
+      var df = Math.max.apply(null, pp) - Math.min.apply(null, pp);
+      var sv = (df * 50).toFixed(2).replace(".", ",");
+      h += '<div class="sum"><div class="srow">';
+      h += '<span class="slbl">\u00C9cart</span>';
+      h += '<span class="sval">' + df.toFixed(3).replace(".", ",") + ' \u20AC/L</span>';
+      h += '</div><div class="ssub">~' + sv + " \u20AC d'economie sur 50L</div></div>";
+    }
+
+    if (TAB === "search" && R.length > 0) {
+      h += '<div class="info">' + R.length + ' station' + (R.length > 1 ? 's' : '') + ' \u2022 prix temps r\u00E9el</div>';
+    }
+
+    el.innerHTML = h;
+
+    var btns = el.querySelectorAll("[data-fav]");
+    for (var b = 0; b < btns.length; b++) {
+      btns[b].addEventListener("click", function() {
+        toggleFav(parseInt(this.getAttribute("data-fav")));
+      });
+    }
+  }
+
+  function toggleFav(id) {
+    var found = -1;
+    for (var i = 0; i < F.length; i++) {
+      if (F[i].id === id) { found = i; break; }
+    }
+    if (found >= 0) {
+      F.splice(found, 1);
+    } else {
+      for (var i = 0; i < R.length; i++) {
+        if (R[i].id === id) {
+          F.push(JSON.parse(JSON.stringify(R[i])));
+          break;
+        }
+      }
+      F.sort(function(a, b) { return (a.price || 99) - (b.price || 99); });
+    }
+    saveFavs();
+    renderCards();
+    updateTabLabel();
+  }
+
+  async function doSearch() {
+    var qi = document.getElementById("QI");
+    var qb = document.getElementById("QB");
+    if (!qi) return;
+    var q = qi.value.trim();
+    if (!q) return;
+    qb.disabled = true;
+    qb.textContent = "...";
+    var cd = document.getElementById("CDS");
+    cd.innerHTML = '<div class="load"><span class="dot"></span>Recherche...</div>';
+    try {
+      var r = await fetch(API + "/search?q=" + encodeURIComponent(q));
+      var d = await r.json();
+      if (d.error) throw new Error(d.error);
+      R = d.stations || [];
+      if (R.length === 0) {
+        cd.innerHTML = '<div class="err">Aucune station trouv\u00E9e.</div>';
+      } else {
+        renderCards();
+      }
+    } catch(e) {
+      cd.innerHTML = '<div class="err">Erreur: ' + esc(e.message) + '</div>';
+    }
+    qb.disabled = false;
+    qb.textContent = "Go";
+  }
+
+  async function doNearby() {
+    var btn = document.getElementById("GEO");
+    var cd = document.getElementById("CDS");
+
+    if (!navigator.geolocation) {
+      cd.innerHTML = '<div class="err">G\u00E9olocalisation non disponible sur ce navigateur.</div>';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Localisation...";
+    cd.innerHTML = '<div class="load"><span class="dot"></span>Localisation en cours...</div>';
+
+    navigator.geolocation.getCurrentPosition(
+      async function(pos) {
+        myLat = pos.coords.latitude;
+        myLon = pos.coords.longitude;
+
+        cd.innerHTML = '<div class="load"><span class="dot"></span>Recherche des stations...</div>';
+
+        // Reverse geocode to find nearby postal code
+        try {
+          var geoUrl = "https://api-adresse.data.gouv.fr/reverse/?lat=" + myLat + "&lon=" + myLon;
+          var geoR = await fetch(geoUrl);
+          var geoD = await geoR.json();
+          var cp = null;
+          if (geoD.features && geoD.features.length > 0) {
+            cp = geoD.features[0].properties.postcode;
+          }
+
+          if (!cp) {
+            cd.innerHTML = '<div class="err">Impossible de d\u00E9terminer le code postal.</div>';
+            btn.disabled = false;
+            btn.textContent = "\uD83D\uDCCD Stations autour de moi (10 km)";
+            return;
+          }
+
+          // Get the department code (first 2 digits)
+          var dep = cp.substring(0, 2);
+
+          // Search nearby CPs: get stations from same department
+          var r = await fetch(API + "/search?q=" + cp);
+          var d = await r.json();
+          var stations = d.stations || [];
+
+          // Also search adjacent CPs (+-1, +-2)
+          var cpNum = parseInt(cp);
+          var extraCPs = [cpNum - 1, cpNum + 1, cpNum - 2, cpNum + 2, cpNum - 10, cpNum + 10];
+          for (var i = 0; i < extraCPs.length; i++) {
+            var ecp = extraCPs[i].toString().padStart(5, "0");
+            if (ecp.substring(0, 2) === dep) {
+              try {
+                var r2 = await fetch(API + "/search?q=" + ecp);
+                var d2 = await r2.json();
+                if (d2.stations) {
+                  for (var j = 0; j < d2.stations.length; j++) {
+                    var exists = false;
+                    for (var k = 0; k < stations.length; k++) {
+                      if (stations[k].id === d2.stations[j].id) { exists = true; break; }
+                    }
+                    if (!exists) stations.push(d2.stations[j]);
+                  }
+                }
+              } catch(e3) {}
+            }
+          }
+
+          // Filter by distance (10km) and sort
+          var nearby = [];
+          for (var m = 0; m < stations.length; m++) {
+            var s = stations[m];
+            var d2 = dist(myLat, myLon, s.lat, s.lon);
+            if (d2 !== null && d2 <= 10) {
+              s._dist = d2;
+              nearby.push(s);
+            }
+          }
+          nearby.sort(function(a, b) { return (a.price || 99) - (b.price || 99); });
+
+          R = nearby;
+          if (R.length === 0) {
+            cd.innerHTML = '<div class="err">Aucune station trouv\u00E9e dans un rayon de 10 km.</div>';
+          } else {
+            renderCards();
+          }
+        } catch(e) {
+          cd.innerHTML = '<div class="err">Erreur: ' + esc(e.message) + '</div>';
+        }
+        btn.disabled = false;
+        btn.textContent = "\uD83D\uDCCD Stations autour de moi (10 km)";
+      },
+      function(err) {
+        cd.innerHTML = '<div class="err">G\u00E9olocalisation refus\u00E9e. Active-la dans les param\u00E8tres.</div>';
+        btn.disabled = false;
+        btn.textContent = "\uD83D\uDCCD Stations autour de moi (10 km)";
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  }
+
+  async function doRefresh() {
+    if (F.length === 0) return;
+    var b = document.getElementById("RB");
+    b.textContent = "...";
+    b.disabled = true;
+    var cps = [];
+    for (var i = 0; i < F.length; i++) {
+      var cp = F[i].cp;
+      if (cp && cps.indexOf(cp) === -1) cps.push(cp);
+    }
+    try {
+      var r = await fetch(API + "/by-cp?cps=" + cps.join(","));
+      var d = await r.json();
+      if (d.error) throw new Error(d.error);
+      var all = d.stations || [];
+      for (var i = 0; i < F.length; i++) {
+        for (var j = 0; j < all.length; j++) {
+          if (all[j].id === F[i].id) {
+            F[i].price = all[j].price;
+            F[i].updated = all[j].updated;
+            if (all[j].lat) F[i].lat = all[j].lat;
+            if (all[j].lon) F[i].lon = all[j].lon;
+            if (all[j].name && all[j].name.length > 1) F[i].name = all[j].name;
+            break;
+          }
+        }
+      }
+      F.sort(function(a, b) { return (a.price || 99) - (b.price || 99); });
+      saveFavs();
+      document.getElementById("LR").textContent = "prix \u00E0 " + new Date().toLocaleTimeString("fr-FR");
+      renderCards();
+    } catch(e) {
+      console.error(e);
+    }
+    b.textContent = "\u27F3 Actualiser";
+    b.disabled = false;
+  }
+
+})();
+</script>
+</body>
+</html>
